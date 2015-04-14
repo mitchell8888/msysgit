@@ -1,23 +1,26 @@
-From f5f6cd0be06fbb562b407444c20cf96ac887d4b5 Mon Sep 17 00:00:00 2001
+From e06a316c2f178bcbe65fd66afb37eae4e7b9371e Mon Sep 17 00:00:00 2001
 From: Erik Faye-Lund <kusmabite@gmail.com>
 Date: Mon, 27 Jul 2009 23:27:04 +0200
-Subject: [PATCH 5/7] generate import lib
+Subject: [PATCH] generate import lib
 
 Signed-off-by: Erik Faye-Lund <kusmabite@gmail.com>
+---
+ util/pl/Mingw32.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/util/pl/Mingw32.pl b/util/pl/Mingw32.pl
-index 87c2ccc..10a3d05 100644
+index ada42b9..f3db22a 100644
 --- a/util/pl/Mingw32.pl
 +++ b/util/pl/Mingw32.pl
-@@ -94,7 +94,7 @@ sub do_lib_rule
+@@ -92,7 +92,7 @@ sub do_lib_rule
  
  	$ret.="$target: \$(${Name}OBJ)\n";
  	$ret.="\tif exist $target \$(RM) $target\n";
--	$ret.="\t\$(MKLIB) $target \$(${Name}OBJ) \$(EX_LIBS) $ex\n\n";
+-	$ret.="\t\$(MKLIB) $target \$(${Name}OBJ) \$(EX_LIBS) $ex\n\n";	
 +	$ret.="\t\$(MKLIB) $target \$(${Name}OBJ) \$(EX_LIBS) -Wl,--out-implib,$target.a $ex\n\n";
  	}
  
  sub do_link_rule
 -- 
-2.1.0
+1.8.3.msysgit.0
 
