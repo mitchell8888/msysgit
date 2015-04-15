@@ -81,22 +81,24 @@ test grep INSTALLTOP=/mingw $DIR/Makefile > /dev/null 2>&1 || (
 
 test -f $DIR/openssl.dll || (
 	cd $DIR &&
-	./Configure mingw &&
+	./Configure mingw shared &&
+	make depend &&
 	make &&
-	cd out &&
+	cd apps &&
 	list=$(echo *.dll openssl.exe) &&
 	cp $list /mingw/bin && (
 		cd /mingw/bin &&
 		git add $list &&
 		git commit -n -s -m "Install OpenSSL $VERSION"
 	) &&
+	cd .. &&
 	list=$(echo *.dll.a) &&
 	cp $list /mingw/lib && (
 		cd /mingw/lib &&
 		git add $list &&
 		git commit -n -s -m "Install OpenSSL $VERSION import libs"
 	) &&
-	cd ../outinc &&
+	cd include &&
 	cp -r openssl /mingw/include &&
 	(
 		cd /mingw/include &&
