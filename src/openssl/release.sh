@@ -81,7 +81,8 @@ test grep INSTALLTOP=/mingw $DIR/Makefile > /dev/null 2>&1 || (
 
 test -f $DIR/openssl.dll || (
 	cd $DIR &&
-	cmd /c ms\\mingw32.bat &&
+	./Configure mingw &&
+	make &&
 	cd out &&
 	list=$(echo *.dll openssl.exe) &&
 	cp $list /mingw/bin && (
