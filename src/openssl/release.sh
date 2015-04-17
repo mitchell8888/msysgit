@@ -2,7 +2,7 @@
 
 cd "$(dirname "$0")"
 
-VERSION=0.9.8zf
+VERSION=1.0.2a
 DIR=openssl-$VERSION
 URL=http://www.openssl.org/source/$DIR.tar.gz
 FILE=${URL##*/}
@@ -82,7 +82,10 @@ test grep INSTALLTOP=/mingw $DIR/Makefile > /dev/null 2>&1 || (
 test -f $DIR/openssl.dll || (
 	cd $DIR &&
 	cmd /c ms\\mingw32.bat &&
-	cd out &&
+	./Configure mingw shared &&
+	make depend &&
+	make &&
+	cd apps &&
 	list=$(echo *.dll openssl.exe) &&
 	cp $list /mingw/bin && (
 		cd /mingw/bin &&

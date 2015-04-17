@@ -1,26 +1,29 @@
-From 920cd643c05fe13e23fbc78313493c8b1e1dcef8 Mon Sep 17 00:00:00 2001
+From 88da61a6b02fab5e178501cf635e59bb2dda3318 Mon Sep 17 00:00:00 2001
 From: Erik Faye-Lund <kusmabite@gmail.com>
 Date: Thu, 7 Apr 2011 17:42:55 +0200
-Subject: [PATCH 6/7] do not specify -march=i486
+Subject: [PATCH] do not specify -march=i486
 
 The 486 is phased out around the world now, there's no point in
 crippling the compiled result.
 
 Signed-off-by: Erik Faye-Lund <kusmabite@gmail.com>
+---
+ Configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Configure b/Configure
-index db0f517..61548d1 100755
+index d7ecf97..c6cdd25 100755
 --- a/Configure
 +++ b/Configure
-@@ -491,7 +491,7 @@ my %table=(
+@@ -533,7 +533,7 @@ my %table=(
  "BC-32","bcc32::::WIN32::BN_LLONG DES_PTR RC4_INDEX EXPORT_VAR_AS_FN:${no_asm}:win32",
  
  # MinGW
--"mingw", "gcc:-mno-cygwin -DL_ENDIAN -fomit-frame-pointer -O3 -march=i486 -Wall -D_WIN32_WINNT=0x333:::MINGW32:-lwsock32 -lgdi32:BN_LLONG ${x86_gcc_des} ${x86_gcc_opts} EXPORT_VAR_AS_FN:${x86_coff_asm}:win32:cygwin-shared:-D_WINDLL -DOPENSSL_USE_APPLINK:-mno-cygwin -shared:.dll.a",
-+"mingw", "gcc:-mno-cygwin -DL_ENDIAN -fomit-frame-pointer -O3 -Wall -D_WIN32_WINNT=0x333:::MINGW32:-lwsock32 -lgdi32:BN_LLONG ${x86_gcc_des} ${x86_gcc_opts} EXPORT_VAR_AS_FN:${x86_coff_asm}:win32:cygwin-shared:-D_WINDLL -DOPENSSL_USE_APPLINK:-mno-cygwin -shared:.dll.a",
- 
- # UWIN 
- "UWIN", "cc:-DTERMIOS -DL_ENDIAN -O -Wall:::UWIN::BN_LLONG ${x86_gcc_des} ${x86_gcc_opts}:${no_asm}:win32",
+-"mingw", "gcc:-mno-cygwin -DL_ENDIAN -DWIN32_LEAN_AND_MEAN -fomit-frame-pointer -O3 -march=i486 -Wall::-D_MT:MINGW32:-lws2_32 -lgdi32 -lcrypt32:BN_LLONG ${x86_gcc_des} ${x86_gcc_opts} EXPORT_VAR_AS_FN:${x86_asm}:coff:win32:cygwin-shared:-D_WINDLL -DOPENSSL_USE_APPLINK:-mno-cygwin:.dll.a",
++"mingw", "gcc:-mno-cygwin -DL_ENDIAN -DWIN32_LEAN_AND_MEAN -fomit-frame-pointer -O3 -Wall::-D_MT:MINGW32:-lws2_32 -lgdi32 -lcrypt32:BN_LLONG ${x86_gcc_des} ${x86_gcc_opts} EXPORT_VAR_AS_FN:${x86_asm}:coff:win32:cygwin-shared:-D_WINDLL -DOPENSSL_USE_APPLINK:-mno-cygwin:.dll.a",
+ # As for OPENSSL_USE_APPLINK. Applink makes it possible to use .dll
+ # compiled with one compiler with application compiled with another
+ # compiler. It's possible to engage Applink support in mingw64 build,
 -- 
-2.1.0
+1.8.3.msysgit.0
 

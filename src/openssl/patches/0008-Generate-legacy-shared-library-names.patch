@@ -1,0 +1,64 @@
+From e82f681a3f919bc0671e8fed13bec06bfed843ec Mon Sep 17 00:00:00 2001
+From: Mitchell Lee <mitchell8888@gmail.com>
+Date: Fri, 17 Apr 2015 15:30:31 -0600
+Subject: [PATCH] Generate legacy shared library names
+
+---
+ Makefile.shared |  8 ++++----
+ util/mkdef.pl   | 10 +++-------
+ 2 files changed, 7 insertions(+), 11 deletions(-)
+
+diff --git a/Makefile.shared b/Makefile.shared
+index e753f44..8ef1840 100644
+--- a/Makefile.shared
++++ b/Makefile.shared
+@@ -283,12 +283,12 @@ link_a.cygwin:
+ 	base=-Wl,--enable-auto-image-base; \
+ 	if expr $(PLATFORM) : 'mingw' > /dev/null; then \
+ 		case $(LIBNAME) in \
+-			crypto) SHLIB=libeay;; \
+-			ssl) SHLIB=ssleay;; \
++			crypto) SHLIB=libcrypto; LIBDEF=libeay;; \
++			ssl) SHLIB=libssl; LIBDEF=ssleay;; \
+ 		esac; \
+-		SHLIB_SOVER=32; \
++		SHLIB_SOVER=; \
+ 		extras="$(LIBNAME).def"; \
+-		$(PERL) util/mkdef.pl 32 $$SHLIB > $$extras; \
++		$(PERL) util/mkdef.pl 32 $$LIBDEF > $$extras; \
+ 		base=; [ $(LIBNAME) = "crypto" ] && base=-Wl,--image-base,0x63000000; \
+ 	fi; \
+ 	dll_name=$$SHLIB$$SHLIB_SOVER$$SHLIB_SUFFIX; \
+diff --git a/util/mkdef.pl b/util/mkdef.pl
+index c57c7f7..d131f06 100755
+--- a/util/mkdef.pl
++++ b/util/mkdef.pl
+@@ -253,10 +253,10 @@ foreach (@ARGV, split(/ /, $options))
+ 
+ if (!$libname) { 
+ 	if ($do_ssl) {
+-		$libname="SSLEAY";
++		$libname="LIBSSL";
+ 	}
+ 	if ($do_crypto) {
+-		$libname="LIBEAY";
++		$libname="LIBCRYPTO";
+ 	}
+ }
+ 
+@@ -1300,11 +1300,7 @@ sub print_def_file
+ 	my $what = "OpenSSL: implementation of Secure Socket Layer";
+ 	my $description = "$what $version, $name - http://$http_vendor";
+ 
+-	if ($W32)
+-		{ $libname.="32"; }
+-	elsif ($W16)
+-		{ $libname.="16"; }
+-	elsif ($OS2)
++	if ($OS2)
+ 		{ # DLL names should not clash on the whole system.
+ 		  # However, they should not have any particular relationship
+ 		  # to the name of the static library.  Chose descriptive names
+-- 
+1.8.3.msysgit.0
+
